@@ -1,0 +1,65 @@
+<header class="header" style="background-color: #2e7d32">
+  <div class="container">
+    <nav class="navbar">
+      <div class="logo">
+        <a
+          href="#"
+          style="
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          "
+        >
+          <img
+            src="/img/logo.jpg"
+            alt="Logo"
+            style="height: 40px; width: auto; border-radius: 8px"
+          />
+          Inforealita
+        </a>
+      </div>
+
+      <button class="mobile-menu-btn" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="nav-menu" id="navMenu">
+        <ul class="nav-links">
+          <li><a href="/" style="color: white">Beranda</a></li>
+          <li class="dropdown">
+            <a href="#" style="color: white"
+              >Kategori <i class="fas fa-chevron-down"></i
+            ></a>
+            <div class="dropdown-content">
+              <a href="/kategori/Politik">Politik</a>
+              <a href="/kategori/olahraga">Olahraga</a>
+              <a href="/kategori/teknologi">Teknologi</a>
+              <a href="/kategori/hiburan">Hiburan</a>
+              <a href="/kategori/bisnis">Bisnis</a>
+            </div>
+          </li>
+        </ul>
+
+        <form action="/search" method="GET" class="search-form">
+          <input
+            type="text"
+            name="q"
+            placeholder="Cari berita..."
+            value="<%= typeof query !== 'undefined' ? query : '' %>"
+          />
+          <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function toggleMenu() {
+    var menu = document.getElementById("navMenu");
+    menu.classList.toggle("show");
+  }
+</script>

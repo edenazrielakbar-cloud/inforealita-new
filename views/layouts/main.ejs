@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      <%= typeof title !== 'undefined' ? title : 'Inforealita' %> - Inforealita
+    </title>
+    <meta name="description" content="Portal berita terbaru dan terpercaya" />
+
+    <meta
+      property="og:title"
+      content="<%= typeof title !== 'undefined' ? title : 'Inforealita' %> - Inforealita"
+    />
+    <meta
+      property="og:description"
+      content="<%= 
+        (typeof berita !== 'undefined' && berita && berita.konten) 
+          ? berita.konten.replace(/<[^>]*>/g, '').substring(0, 150) + '...' 
+          : 'Portal berita terbaru dan terpercaya'
+      %>"
+    />
+    <meta
+      property="og:image"
+      content="<%= 
+        (typeof berita !== 'undefined' && berita && berita.thumbnail) 
+          ? 'http://localhost:3000' + berita.thumbnail 
+          : 'http://localhost:3000/images/default-og.jpg'
+      %>"
+    />
+    <meta
+      property="og:url"
+      content="<%= 'http://localhost:3000' + (typeof path !== 'undefined' ? path : '') %>"
+    />
+    <meta
+      property="og:type"
+      content="<%= (typeof berita !== 'undefined' && berita) ? 'article' : 'website' %>"
+    />
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <%- include('../partials/header') %>
+
+    <main class="container"><%- body %></main>
+
+    <%- include('../partials/footer') %>
+
+    <script src="/js/main.js"></script>
+  </body>
+</html>

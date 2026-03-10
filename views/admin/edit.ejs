@@ -1,0 +1,277 @@
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-edit"></i> Edit Berita</h1>
+        <a href="/admin" class="btn-secondary">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </div>
+    
+    <form action="/admin/edit/<%= berita.id %>" method="POST" enctype="multipart/form-data" class="berita-form">
+        <div class="form-group">
+            <label for="judul">Judul Berita <span class="required">*</span></label>
+            <input type="text" id="judul" name="judul" value="<%= berita.judul %>" required placeholder="Masukkan judul berita...">
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="kategori">Kategori <span class="required">*</span></label>
+                <select id="kategori" name="kategori" required>
+                    <option value="">Pilih Kategori</option>
+                    <option value="Berita" <%= berita.kategori === 'Politik' ? 'selected' : '' %>>Politik</option>
+                    <option value="Olahraga" <%= berita.kategori === 'Olahraga' ? 'selected' : '' %>>Olahraga</option>
+                    <option value="Teknologi" <%= berita.kategori === 'Teknologi' ? 'selected' : '' %>>Teknologi</option>
+                    <option value="Hiburan" <%= berita.kategori === 'Hiburan' ? 'selected' : '' %>>Hiburan</option>
+                    <option value="Bisnis" <%= berita.kategori === 'Bisnis' ? 'selected' : '' %>>Bisnis</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="penulis">Penulis</label>
+                <input type="text" id="penulis" name="penulis" value="<%= berita.penulis %>">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="thumbnail">Thumbnail</label>
+            <% if (berita.thumbnail) { %>
+                <div class="current-thumbnail">
+                    <p>Thumbnail saat ini:</p>
+                    <img src="<%= berita.thumbnail %>" alt="Current thumbnail" style="max-width: 200px; max-height: 150px; margin-bottom: 10px; border-radius: 5px;">
+                </div>
+            <% } %>
+            <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
+            <small class="form-text">Kosongkan jika tidak ingin mengubah thumbnail. Format: JPG, JPEG, PNG, GIF. Maksimal 2MB</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="konten">Konten Berita <span class="required">*</span></label>
+            <div id="editor"></div>
+            <textarea id="konten" name="konten" style="display:none;"><%- berita.konten %></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" name="status">
+                <option value="publish" <%= berita.status === 'publish' ? 'selected' : '' %>>Publish</option>
+                <option value="draft" <%= berita.status === 'draft' ? 'selected' : '' %>>Draft</option>
+            </select>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-save"></i> Update Berita
+            </button>
+            <a href="/admin" class="btn-secondary">
+                <i class="fas fa-times"></i> Batal
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Quill Editor untuk rich text -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<style>
+.admin-container {
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 2rem 0;
+}
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #81c784;
+}
+
+.required {
+    color: #dc3545;
+    margin-left: 3px;
+}
+
+.berita-form {
+    max-width: 100%;
+    margin-top: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2e7d32;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.current-thumbnail {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+.current-thumbnail p {
+    margin-bottom: 0.5rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.form-text {
+    display: block;
+    margin-top: 0.25rem;
+    color: #666;
+    font-size: 0.85rem;
+}
+
+#editor {
+    height: 400px;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+}
+
+.btn-primary {
+    background: #2e7d32;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background: #1b5e20;
+}
+
+.btn-secondary {
+    background: #f5f5f5;
+    color: #333;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+    border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+    background: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    #editor {
+        height: 300px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Quill
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1,2,3,4,5,6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image']
+            ]
+        },
+        placeholder: 'Edit konten berita di sini...'
+    });
+    
+    // Set initial content
+    const konten = document.querySelector('#konten').value;
+    quill.root.innerHTML = konten;
+    
+    // Custom image handler
+    var toolbar = quill.getModule('toolbar');
+    toolbar.addHandler('image', function() {
+        selectLocalImage();
+    });
+    
+    function selectLocalImage() {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+        
+        input.onchange = function() {
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+            
+            const range = quill.getSelection();
+            
+            fetch('/admin/upload-image', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    quill.insertEmbed(range.index, 'image', data.file.url);
+                } else {
+                    alert('Gagal upload gambar');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Gagal upload gambar');
+            });
+        };
+    }
+    
+    // Submit form
+    document.querySelector('.berita-form').onsubmit = function() {
+        document.querySelector('#konten').value = quill.root.innerHTML;
+    };
+});
+</script>

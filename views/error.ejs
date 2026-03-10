@@ -1,0 +1,59 @@
+<div class="error-page">
+  <div class="error-container">
+    <i
+      class="fas fa-exclamation-triangle"
+      style="font-size: 64px; color: #dc3545; margin-bottom: 20px"
+    ></i>
+    <h1>Oops! Terjadi Kesalahan</h1>
+    <p><%= message || 'Halaman yang Anda cari tidak dapat ditemukan.' %></p>
+
+    <div class="error-actions">
+      <a href="/" class="btn-primary">
+        <i class="fas fa-home"></i> Kembali ke Home
+      </a>
+      <button onclick="history.back()" class="btn-secondary">
+        <i class="fas fa-arrow-left"></i> Kembali
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .error-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+  .error-container {
+    max-width: 600px;
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  .error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  .btn-primary {
+    background: #2e7d32;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  .btn-secondary {
+    background: #f5f5f5;
+    color: #333;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+</style>

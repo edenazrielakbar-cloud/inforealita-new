@@ -1,0 +1,146 @@
+<div class="admin-container">
+    <div class="admin-header">
+        <h1><i class="fas fa-tachometer-alt"></i> Dashboard Admin</h1>
+        <a href="/admin/tambah" class="btn-primary">
+            <i class="fas fa-plus"></i> Tambah Berita
+        </a>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <i class="fas fa-newspaper"></i>
+            <h3><%= stats.total %></h3>
+            <p>Total Berita</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-check-circle"></i>
+            <h3><%= stats.publish %></h3>
+            <p>Published</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-pen-alt"></i>
+            <h3><%= stats.draft %></h3>
+            <p>Draft</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-eye"></i>
+            <h3><%= berita.reduce((sum, item) => sum + item.views, 0) %></h3>
+            <p>Total Views</p>
+        </div>
+    </div>
+
+    <div class="admin-section">
+        <h2><i class="fas fa-list"></i> Daftar Berita</h2>
+        
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Thumbnail</th>
+                        <th>Judul</th>
+                        <th>Kategori</th>
+                        <th>Penulis</th>
+                        <th>Status</th>
+                        <th>Views</th>
+                        <th>Tanggal</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (berita.length > 0) { %>
+                        <% berita.forEach(function(item, index) { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td>
+                                <% if (item.thumbnail) { %>
+                                    <img src="<%= item.thumbnail %>" alt="thumbnail" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                                <% } else { %>
+                                    <div style="width: 50px; height: 50px; background: #ddd; display: flex; align-items: center; justify-content: center; border-radius: 5px;">
+                                        <i class="fas fa-image" style="color: #999;"></i>
+                                    </div>
+                                <% } %>
+                            </td>
+                            <td><%= item.judul.length > 30 ? item.judul.substring(0, 30) + '...' : item.judul %></td>
+                            <td><span class="category-badge"><%= item.kategori %></span></td>
+                            <td><%= item.penulis %></td>
+                            <td>
+                                <span class="status-badge status-<%= item.status %>">
+                                    <%= item.status === 'publish' ? 'Published' : 'Draft' %>
+                                </span>
+                            </td>
+                            <td><%= item.views %></td>
+                            <td><%= new Date(item.createdAt).toLocaleDateString('id-ID') %></td>
+                            <td class="action-buttons">
+                                <a href="/admin/edit/<%= item.id %>" class="action-btn edit" title="Edit">
+                                <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="/berita/<%= item.slug %>" target="_blank" class="action-btn view" title="Lihat">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <form action="/admin/delete/<%= item.id %>" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
+                                    <button type="submit" class="action-btn delete" title="Hapus">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }); %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="9" style="text-align: center; padding: 2rem;">
+                                <i class="fas fa-newspaper" style="font-size: 48px; color: #ccc; margin-bottom: 10px;"></i>
+                                <p>Belum ada berita. <a href="/admin/tambah" style="color: #2e7d32;">Tambah berita sekarang</a></p>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+.admin-container {
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 2rem 0;
+}
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #81c784;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.stat-card {
+    background: linear-gradient(135deg, #4caf50, #2e7d32);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+}
+.stat-card i { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.stat-card h3 { font-size: 2rem; margin-bottom: 0.5rem; }
+.admin-table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+.admin-table th { background: #2e7d32; color: white; padding: 1rem; }
+.admin-table td { padding: 1rem; border-bottom: 1px solid #eee; }
+.category-badge { background: #4caf50; color: white; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.85rem; }
+.status-badge { padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.85rem; }
+.status-publish { background: #d4edda; color: #155724; }
+.status-draft { background: #fff3cd; color: #856404; }
+.action-buttons { display: flex; gap: 0.5rem; }
+.action-btn { width: 32px; height: 32px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; color: white; text-decoration: none; border: none; cursor: pointer; }
+.action-btn.view { background: #17a2b8; }
+.action-btn.delete { background: #dc3545; }
+.btn-primary { background: #2e7d32; color: white; padding: 0.75rem 1.5rem; border-radius: 5px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; }
+</style>

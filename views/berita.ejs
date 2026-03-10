@@ -1,0 +1,69 @@
+<div class="breadcrumb">
+    <a href="/">Home</a>
+    <span class="separator">/</span>
+    <a href="/kategori/<%= berita.kategori %>"><%= berita.kategori %></a>
+    <span class="separator">/</span>
+    <span><%= berita.judul %></span>
+</div>
+
+<article class="berita-detail">
+    <header class="berita-header">
+        <h1><%= berita.judul %></h1>
+        <div class="meta">
+            <span><i class="fas fa-calendar"></i> <%= new Date(berita.createdAt).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+            <span><i class="fas fa-user"></i> <%= berita.penulis %></span>
+            <span><i class="fas fa-eye"></i> <%= berita.views %>x dilihat</span>
+        </div>
+    </header>
+    
+    <% if (berita.thumbnail) { %>
+    <div class="featured-image">
+        <img src="<%= berita.thumbnail %>" alt="<%= berita.judul %>">
+    </div>
+    <% } %>
+    
+    <div class="berita-content">
+        <%- berita.konten %>
+    </div>
+    
+    <div class="share-article">
+        <h3>Bagikan Artikel:</h3>
+        <div class="share-buttons">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=<%= encodeURIComponent('http://localhost:3000/berita/' + berita.slug) %>" target="_blank" class="share-btn facebook">
+                <i class="fab fa-facebook-f"></i> Facebook
+            </a>
+            <a href="https://twitter.com/intent/tweet?url=<%= encodeURIComponent('http://localhost:3000/berita/' + berita.slug) %>&text=<%= encodeURIComponent(berita.judul) %>" target="_blank" class="share-btn twitter">
+                <i class="fab fa-twitter"></i> Twitter
+            </a>
+            <a href="https://wa.me/?text=<%= encodeURIComponent(berita.judul + ' - ' + 'http://localhost:3000/berita/' + berita.slug) %>" target="_blank" class="share-btn whatsapp">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+        </div>
+    </div>
+</article>
+
+<!-- Berita Terkait -->
+<% if (beritaTerkait.length > 0) { %>
+<section class="berita-terkait">
+    <h2>Berita Terkait</h2>
+    <div class="berita-grid">
+        <% beritaTerkait.forEach(function(item) { %>
+        <article class="berita-card">
+            <a href="/berita/<%= item.slug %>">
+                <div class="thumbnail">
+                    <% if (item.thumbnail) { %>
+                        <img src="<%= item.thumbnail %>" alt="<%= item.judul %>">
+                    <% } else { %>
+                        <div class="no-image">Tidak Ada Gambar</div>
+                    <% } %>
+                </div>
+                <h3><%= item.judul %></h3>
+                <div class="meta">
+                    <span><i class="fas fa-calendar"></i> <%= new Date(item.createdAt).toLocaleDateString('id-ID') %></span>
+                </div>
+            </a>
+        </article>
+        <% }); %>
+    </div>
+</section>
+<% } %>
