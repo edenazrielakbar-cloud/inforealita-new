@@ -4,5 +4,4 @@ dist/
 *.log
 *package
 gitignore
-package.json
 package-lock.json
